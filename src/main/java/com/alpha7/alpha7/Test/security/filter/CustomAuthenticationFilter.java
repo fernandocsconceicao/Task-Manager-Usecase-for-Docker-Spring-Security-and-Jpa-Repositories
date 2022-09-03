@@ -1,21 +1,20 @@
-package com.alpha7.alpha7.Test.security;
+package com.alpha7.alpha7.Test.security.filter;
 
 import com.alpha7.alpha7.Test.entity.User;
-import com.alpha7.alpha7.Test.security.AuthenticationManager;
 import com.alpha7.alpha7.Test.security.service.UserServiceImp;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.jfr.ContentType;
 import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -23,17 +22,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
-@NoArgsConstructor
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 
-    private AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    private UserServiceImp userServiceImp ;
-
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    public CustomAuthenticationFilter(org.springframework.security.authentication.AuthenticationManager authenticationManager){
+        this.authenticationManager = authenticationManager;
+    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -41,12 +43,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String password =  request.getParameter("password");
         log.info("User is trying to log in. Username {}",username);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,password);
-        try {
-            return authenticationManagerBuilder.userDetailsService(userServiceImp).and().build().authenticate(authenticationToken);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return authenticationManager.authenticate(authenticationToken);
     }
 
     @Override
@@ -64,7 +61,10 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withExpiresAt(new Date(System.currentTimeMillis() * 1000 * 60 * 30 ))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
-        response.setHeader("access_token", access_token);
-        response.setHeader("refresh_token", refreshToken);
+        Map<String,String> token = new HashMap();
+        token.put("access_token", access_token);
+        token.put("refresh_token", refreshToken);
+        response.setContentType("application/json");
+        new ObjectMapper().writeValue(response.getOutputStream(),token);
     }
 }

@@ -7,6 +7,7 @@ import com.alpha7.alpha7.Test.entity.User;
 import com.alpha7.alpha7.Test.security.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
