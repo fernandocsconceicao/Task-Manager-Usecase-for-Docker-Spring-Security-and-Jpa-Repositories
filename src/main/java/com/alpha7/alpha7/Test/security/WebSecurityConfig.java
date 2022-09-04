@@ -8,34 +8,35 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter  {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserServiceImp userService;
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Override
-    public void configure(HttpSecurity httpSecurity) throws Exception{
+    public void configure(HttpSecurity httpSecurity) throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(super.authenticationManager());
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
-        httpSecurity.authorizeRequests()
-                .antMatchers("/api/login/**").permitAll()
-                .antMatchers("/user/save","/user/role/save","/user/role/addtouser").permitAll()
-                .and().csrf().disable()
-                .httpBasic().and()
-                .formLogin();
-        httpSecurity.authorizeRequests().anyRequest().authenticated().and()
-                .addFilter(customAuthenticationFilter)
-                .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
-        ;
+        httpSecurity.csrf().disable();
+        httpSecurity.sessionManagement().sessionCreationPolicy(STATELESS);
+        httpSecurity.authorizeRequests().antMatchers("/api/login/**", "/token/refresh", "/user/save").permitAll();
+        httpSecurity.authorizeRequests().antMatchers( "/user/role/save", "/user/role/addtouser").hasAnyAuthority("USER");
+        httpSecurity.authorizeRequests().anyRequest().authenticated();
+        httpSecurity.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilter(customAuthenticationFilter);
+
     }
 
 //    @Bean

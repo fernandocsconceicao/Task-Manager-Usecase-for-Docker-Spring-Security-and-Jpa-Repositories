@@ -5,7 +5,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +25,7 @@ import static java.util.Arrays.stream;
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/api/login")) {
+        if (request.getServletPath().equals("/api/login") || request.getServletPath().equals("/token/refresh/**")) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader("Authorization");
@@ -43,23 +42,23 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     stream(roles).forEach(role -> {
                         authorityCollection.add(new SimpleGrantedAuthority(role));
                     });
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null,authorityCollection);
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorityCollection);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    filterChain.doFilter(request,response);
+                    filterChain.doFilter(request, response);
                 } catch (Exception e) {
-                    logger.error(" Error when logging in: "+ e.getMessage()) ;
-                    response.setHeader("error" ,e.getMessage());
+                    logger.error(" Error when logging in: " + e.getMessage());
+                    response.setHeader("error", e.getMessage());
                     response.setStatus(403);
-                    Map<String,String> token = new HashMap();
-                    Map<String,String> error =  new HashMap<>();
+                    Map<String, String> token = new HashMap();
+                    Map<String, String> error = new HashMap<>();
                     error.put("access_token", e.getMessage());
                     response.setContentType("application/json");
-                    new ObjectMapper().writeValue(response.getOutputStream(),token);
+                    new ObjectMapper().writeValue(response.getOutputStream(), token);
 
                 }
 
-            }else{
-                filterChain.doFilter(request,response);
+            } else {
+                filterChain.doFilter(request, response);
 
             }
         }
