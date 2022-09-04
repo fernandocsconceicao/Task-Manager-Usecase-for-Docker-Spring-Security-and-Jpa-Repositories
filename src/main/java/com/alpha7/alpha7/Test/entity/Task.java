@@ -19,7 +19,7 @@ import java.util.UUID;
 public class Task implements Serializable {
     @Id
     @GeneratedValue
-    private UUID id;
+    private Long id;
     private Date createDate;
     private Date dueDate;
     private String email;

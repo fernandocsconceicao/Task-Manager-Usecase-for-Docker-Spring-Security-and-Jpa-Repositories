@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface TaskRepository extends JpaRepository<Task, UUID> {
+public interface TaskRepository extends JpaRepository<Task, Long> {
 //     @Query("SELECT * FROM task WHERE email = \"fernando@gmail.com\"")
      List<Task> findByEmail(String email);
 

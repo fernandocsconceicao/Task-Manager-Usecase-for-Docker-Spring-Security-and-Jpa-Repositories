@@ -31,7 +31,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable();
         httpSecurity.sessionManagement().sessionCreationPolicy(STATELESS);
         httpSecurity.authorizeRequests().antMatchers("/token/refresh").permitAll();
-        httpSecurity.authorizeRequests().antMatchers("/task/save","/task/late","/task/delete").hasAnyAuthority("USER");
+        httpSecurity.authorizeRequests().antMatchers("/user/save","/user/role/addtouser","/user/role/save").permitAll();
+        httpSecurity.authorizeRequests().antMatchers("/task/save","/task/late","/task/delete", "/task/edit").hasAnyAuthority("USER");
 
 //        httpSecurity.authorizeRequests().antMatchers( "/user/role/save", "/user/role/addtouser","/user/save").hasAnyAuthority("USER");
 //        httpSecurity.authorizeRequests().antMatchers("/api/login/**", "/token/refresh").permitAll();

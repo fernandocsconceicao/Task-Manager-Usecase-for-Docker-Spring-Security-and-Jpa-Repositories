@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class TaskService {
@@ -35,7 +32,17 @@ public class TaskService {
 
     }
 
-    public void deleteTask(UUID id) {
+    public void deleteTask( Long id) {
         taskRepository.deleteById(id);
+    }
+
+    public Task editTask(Task task) throws Exception {
+        Optional<Task> taskOptional = taskRepository.findById(task.getId());
+        if(taskOptional.isPresent()){
+           return  taskRepository.save(task);
+        }
+        else{
+            throw new Exception("Task id Not found");
+        }
     }
 }

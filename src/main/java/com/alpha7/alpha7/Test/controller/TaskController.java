@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.html.parser.Entity;
 import java.text.ParseException;
 import java.util.List;
 import java.util.UUID;
@@ -31,19 +32,21 @@ public class TaskController {
     private UserServiceImp userService;
 
     @GetMapping("/late")
-    public ResponseEntity<List<Task>> getAllLateTask(@RequestParam String email){
+    public ResponseEntity<List<Task>> getAllLateTask(HttpServletRequest request){
+        String email = userService.getEmailFromRequestServlet(request);
         return ResponseEntity.ok().body(taskService.getAllLateTask(email));
 
     }
     @DeleteMapping("/delete")
-    public ResponseEntity deleteTask(@RequestParam UUID id){
+    public ResponseEntity deleteTask(@RequestBody Long id){
         taskService.deleteTask(id);
         return (ResponseEntity) ResponseEntity.accepted();
     }
 
     //Listar todas as tarefas de todos os estados contendo  email descrição e prazo TODO: Implementar paginação
     @GetMapping("/all")
-    public ResponseEntity<List<Task>> getTasks(@RequestParam String email)  {
+    public ResponseEntity<List<Task>> getTasks(HttpServletRequest request)  {
+        String email = userService.getEmailFromRequestServlet(request);
         return ResponseEntity.ok().body(
                 taskService.getTasksByEmail(email)
         );
@@ -55,6 +58,15 @@ public class TaskController {
         if ( email != null){
             Task task = taskService.saveTask(taskDto.toTask(taskDto,email ));
             return task.toString();
+
+        }
+        throw new Exception ("Error to get email");
+    }
+    @PutMapping("/edit")
+    public ResponseEntity<Task> edit(@RequestBody Task task, HttpServletRequest request) throws Exception {
+        String email = userService.getEmailFromRequestServlet(request);
+        if ( email != null){
+            return ResponseEntity.ok().body(taskService.editTask(task));
 
         }
         throw new Exception ("Error to get email");
