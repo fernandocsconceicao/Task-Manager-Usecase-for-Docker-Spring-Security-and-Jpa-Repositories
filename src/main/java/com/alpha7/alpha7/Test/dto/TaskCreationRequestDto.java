@@ -10,17 +10,16 @@ import java.util.Date;
 
 @AllArgsConstructor
 public class TaskCreationRequestDto {
-    private String email;
     private String description;
     private String dueDate;
 
-    public Task toTask(TaskCreationRequestDto dto) throws ParseException {
+    public Task toTask(TaskCreationRequestDto dto,String email) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return new Task(
                 null,
                 new Date(),
                 sdf.parse(dto.dueDate),
-                dto.email,
+                email,
                 dto.description,
                 TaskStatus.TODO,
                 new Date());

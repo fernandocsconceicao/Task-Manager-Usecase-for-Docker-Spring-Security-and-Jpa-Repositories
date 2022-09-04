@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -31,35 +30,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
         httpSecurity.csrf().disable();
         httpSecurity.sessionManagement().sessionCreationPolicy(STATELESS);
-        httpSecurity.authorizeRequests().antMatchers("/api/login/**", "/token/refresh", "/user/save").permitAll();
-        httpSecurity.authorizeRequests().antMatchers( "/user/role/save", "/user/role/addtouser").hasAnyAuthority("USER");
+        httpSecurity.authorizeRequests().antMatchers("/token/refresh").permitAll();
+        httpSecurity.authorizeRequests().antMatchers("/task/save","/task/late","/task/delete").hasAnyAuthority("USER");
+
+//        httpSecurity.authorizeRequests().antMatchers( "/user/role/save", "/user/role/addtouser","/user/save").hasAnyAuthority("USER");
+//        httpSecurity.authorizeRequests().antMatchers("/api/login/**", "/token/refresh").permitAll();
+//        httpSecurity.authorizeRequests().antMatchers( "/user/role/save", "/user/role/addtouser","/user/save").hasAnyAuthority("USER");
         httpSecurity.authorizeRequests().anyRequest().authenticated();
         httpSecurity.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         httpSecurity.addFilter(customAuthenticationFilter);
 
     }
-
-//    @Bean
-//    fun passwordEncoder(): PasswordEncoder {
-//        return BCryptPasswordEncoder(11)
-//    }
-//
-//    @Bean
-//    fun securityFilterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
-//        httpSecurity
-//                .cors()
-//                .and()
-//                .csrf()
-//                .disable()
-//                .authorizeHttpRequests()
-//                .antMatchers(
-//                        "/register",
-//                        "/resendVerifyToken*",
-//                        "/verifyRegistration"
-//                )
-//                .permitAll()
-//
-//        return httpSecurity.build();
-//    }
-
 }
