@@ -1,12 +1,10 @@
 package com.alpha7.alpha7.Test.security.filter;
 
 import com.alpha7.alpha7.Test.entity.User;
-import com.alpha7.alpha7.Test.security.service.UserServiceImp;
+import com.alpha7.alpha7.Test.repository.RoleRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jdk.jfr.ContentType;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,19 +15,17 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-
+    @Autowired
+    private RoleRepository roleRepository;
 
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -41,16 +37,19 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String username = request.getParameter("username");
         String password =  request.getParameter("password");
-        log.info("User is trying to log in. Username {}",username);
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,password);
+            if(username == null && password==null){
+                log.info("Username e password inexistentes");
+            }
+            log.info("User is trying to log in. Username {}",username);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         return authenticationManager.authenticate(authenticationToken);
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
         log.info("successful Authentication");
         User user = (User) authResult.getPrincipal();
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes()); // TODO cryptograph
+        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
         String access_token = JWT.create()
                 .withSubject(user.getEmail())
                 .withExpiresAt(new Date(System.currentTimeMillis() * 1000 * 60 * 10))

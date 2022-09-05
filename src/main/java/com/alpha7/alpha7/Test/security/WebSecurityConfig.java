@@ -30,13 +30,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
         httpSecurity.csrf().disable();
         httpSecurity.sessionManagement().sessionCreationPolicy(STATELESS);
-        httpSecurity.authorizeRequests().antMatchers("/token/refresh").permitAll();
-        httpSecurity.authorizeRequests().antMatchers("/user/save","/user/role/addtouser","/user/role/save").permitAll();
+        httpSecurity.authorizeRequests().antMatchers("/user/save/**","/api/login/**").permitAll();
+        httpSecurity.authorizeRequests().antMatchers("/token/refresh/**").permitAll();
+        httpSecurity.authorizeRequests().antMatchers("/user/save","/api/login/**");
         httpSecurity.authorizeRequests().antMatchers("/task/save","/task/late","/task/delete", "/task/edit").hasAnyAuthority("USER");
-
-//        httpSecurity.authorizeRequests().antMatchers( "/user/role/save", "/user/role/addtouser","/user/save").hasAnyAuthority("USER");
-//        httpSecurity.authorizeRequests().antMatchers("/api/login/**", "/token/refresh").permitAll();
-//        httpSecurity.authorizeRequests().antMatchers( "/user/role/save", "/user/role/addtouser","/user/save").hasAnyAuthority("USER");
+        httpSecurity.authorizeRequests().antMatchers(
+                "/task/admin/alllate**",
+                "/task/admin/alltodo**",
+                "user/role/addtouser",
+                "/user/role/save").hasAnyAuthority("ADMIN");
         httpSecurity.authorizeRequests().anyRequest().authenticated();
         httpSecurity.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         httpSecurity.addFilter(customAuthenticationFilter);

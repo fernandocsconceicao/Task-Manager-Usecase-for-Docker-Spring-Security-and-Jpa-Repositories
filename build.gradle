@@ -24,7 +24,8 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-security:2.5.8')
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation('com.auth0:java-jwt:4.0.0')
-	compileOnly 'org.projectlombok:lombok'
+    implementation 'org.jetbrains:annotations:20.1.0'
+    compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'

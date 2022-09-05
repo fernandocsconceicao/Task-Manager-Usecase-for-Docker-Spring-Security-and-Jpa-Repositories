@@ -26,8 +26,8 @@ import static java.util.Arrays.stream;
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        log.info("trying to athorize");
-        if (request.getServletPath().equals("/api/login") || request.getServletPath().equals("/token/refresh/**") ) {
+        log.info("trying to authorize");
+        if (request.getServletPath().contains("/api/login") || request.getServletPath().equals("/token/refresh/**") ) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader("Authorization");

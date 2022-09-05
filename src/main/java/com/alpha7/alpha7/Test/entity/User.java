@@ -25,7 +25,7 @@ public class User implements UserDetails, GrantedAuthoritiesContainer {
     @Column(unique = true)
     private String email;
     private String password;
-    @ManyToMany( fetch = EAGER)
+    @ManyToMany( fetch = EAGER, cascade = {CascadeType.ALL})
     private Collection<Role> roles;
 
     @Override

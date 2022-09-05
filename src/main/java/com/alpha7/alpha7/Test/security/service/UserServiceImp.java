@@ -23,6 +23,8 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -57,6 +59,17 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Override
     public User getUser(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public Boolean isThereAdminUser() {
+        ArrayList<User> all = userRepository.findAll();
+        for (User user:all) {
+            for (Role role: user.getRoles())
+            if(role.getName().equals("ADMIN")){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
