@@ -6,8 +6,8 @@ plugins {
 }
 
 group = 'com.alpha7'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+version = 'latest'
+sourceCompatibility = 8
 
 configurations {
 	compileOnly {
@@ -17,6 +17,18 @@ configurations {
 
 repositories {
 	mavenCentral()
+}
+
+task fatJar(type: Jar) {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	manifest {
+		attributes["Main-Class"] = "com/alpha7/alpha7/Test/Alpha7TestApplication"
+	}
+	archiveClassifier = "all"
+	from {
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+	with jar
 }
 
 dependencies {

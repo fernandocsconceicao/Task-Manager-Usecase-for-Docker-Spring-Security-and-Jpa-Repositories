@@ -24,5 +24,4 @@ public class TaskCreationRequestDto {
                 TaskStatus.TODO,
                 new Date());
     }
-
 }

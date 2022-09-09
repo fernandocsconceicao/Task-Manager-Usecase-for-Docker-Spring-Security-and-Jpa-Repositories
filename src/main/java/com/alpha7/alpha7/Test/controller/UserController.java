@@ -4,6 +4,7 @@ import com.alpha7.alpha7.Test.dto.AddRoleToUserDto;
 import com.alpha7.alpha7.Test.dto.UserCreationRequestDto;
 import com.alpha7.alpha7.Test.entity.Role;
 import com.alpha7.alpha7.Test.entity.User;
+import com.alpha7.alpha7.Test.exception.StandardException;
 import com.alpha7.alpha7.Test.security.service.interfaces.UserService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<User> saveUser(@RequestBody UserCreationRequestDto userDto) {
+    public ResponseEntity<User> saveUser(@RequestBody UserCreationRequestDto userDto) throws StandardException {
         return ResponseEntity.ok().body(userService.saveUser(userDto.toUser(userDto)));
     }
 
@@ -47,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping("/role/addtouser")
-    public ResponseEntity<User> addToUser(@RequestBody AddRoleToUserDto dto) {
+    public ResponseEntity<User> addToUser(@RequestBody AddRoleToUserDto dto) throws StandardException {
         userService.addRoleToUser(dto.getEmail(), dto.getRoleName());
         return ResponseEntity.ok().build();
     }

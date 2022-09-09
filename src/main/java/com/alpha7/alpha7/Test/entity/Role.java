@@ -21,8 +21,6 @@ public class Role implements GrantedAuthority {
     private Long id;
     @Column(unique = true)
     private String name;
-
-
     @Override
     public String getAuthority() {
         return this.name;

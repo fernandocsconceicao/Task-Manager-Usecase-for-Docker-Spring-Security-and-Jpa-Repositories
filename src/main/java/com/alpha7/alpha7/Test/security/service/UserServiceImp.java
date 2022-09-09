@@ -2,6 +2,7 @@ package com.alpha7.alpha7.Test.security.service;
 
 import com.alpha7.alpha7.Test.entity.Role;
 import com.alpha7.alpha7.Test.entity.User;
+import com.alpha7.alpha7.Test.exception.StandardException;
 import com.alpha7.alpha7.Test.repository.RoleRepository;
 import com.alpha7.alpha7.Test.repository.UserRepository;
 import com.alpha7.alpha7.Test.security.service.interfaces.UserService;
@@ -12,6 +13,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,10 +39,15 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
 
     @Override
-    public User saveUser(User user) {
-        log.info("Saving user - email s%".format(user.getEmail()));
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        return userRepository.save(user);
+    public User saveUser(User user) throws StandardException {
+        try {
+            log.info("Saving user - email s%".format(user.getEmail()));
+
+            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+            return userRepository.save(user);
+        }catch (NullPointerException e){
+            throw new StandardException("Dados de usuario inválidos, cheque a documentação");
+        }
     }
 
     @Override
@@ -49,9 +56,13 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public void addRoleToUser(String email, String roleName) {
+    public void addRoleToUser(String email, String roleName) throws StandardException {
         User user = userRepository.findByEmail(email);
+
         Role role = roleRepository.findByName(roleName);
+        if(role == null){
+            throw new StandardException("Rolename inválida", HttpStatus.BAD_REQUEST.value());
+        }
         user.getRoles().add(role);
         userRepository.save(user);
     }

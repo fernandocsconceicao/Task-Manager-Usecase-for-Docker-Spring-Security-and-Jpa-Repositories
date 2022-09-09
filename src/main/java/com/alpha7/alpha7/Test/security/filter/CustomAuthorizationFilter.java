@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,8 @@ import java.util.Map;
 import static java.util.Arrays.stream;
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
+    @Value("auth-secret")
+    private String secret;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("trying to authorize");
@@ -35,7 +38,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 try {
 
                     String token = authorizationHeader.substring("Bearer ".length());
-                    Algorithm algorithm = Algorithm.HMAC256("secret".getBytes()); // TODO cryptograph
+                    Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = verifier.verify(token);
                     String username = decodedJWT.getSubject();
@@ -50,7 +53,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 } catch (Exception e) {
                     logger.error(" Error when logging in: " + e.getMessage());
                     response.setHeader("error", e.getMessage());
-                    response.setStatus(403);
+                    response.setStatus(401);
                     Map<String, String> token = new HashMap();
                     Map<String, String> error = new HashMap<>();
                     error.put("access_token", e.getMessage());
