@@ -1,0 +1,386 @@
+{
+	"info": {
+		"_postman_id": "7e5ab6ef-5eb4-48c6-9c00-a95a62189bd9",
+		"name": "Alpha7",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "SaveRole",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"fernando@gmail.com\",\r\n    \"name\": \"USER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/role/save",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"role",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddUser",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZXJuYW5kb0BnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjk5NzM1NTY5MjUxNDQwMH0.pvonfqrZWlwf0lkk3y43Z-O62dH01h34UE8LZE9TmuQ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"fernando@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/save",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllUsers",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZXJuYW5kb0BnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjk5NzM1NTY5MjUxNDQwMH0.pvonfqrZWlwf0lkk3y43Z-O62dH01h34UE8LZE9TmuQ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"fernando@gmail.com\",\r\n    \"roleName\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddRoleToUser",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZXJuYW5kb0BnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjk5NzM1NTY5MjUxNDQwMH0.pvonfqrZWlwf0lkk3y43Z-O62dH01h34UE8LZE9TmuQ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@admin.com\",\r\n    \"roleName\": \"USER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/role/addtouser",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"role",
+								"addtouser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Task",
+			"item": [
+				{
+					"name": "admin Endpoints",
+					"item": [
+						{
+							"name": "Admin Get Late Tasks",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZXJuYW5kb0BnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6OTk3MzU4NzQwMDExNjAwfQ.B66nPRpVd25aafNDgmWT7mTdHGis86htEPwJpI6HZwY",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/task/admin/alllate?page=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"task",
+										"admin",
+										"alllate"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin Get To do Tasks",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZXJuYW5kb0BnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6OTk3MzU4NzQwMDExNjAwfQ.B66nPRpVd25aafNDgmWT7mTdHGis86htEPwJpI6HZwY",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/task/admin/alltodo?page=0",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"task",
+										"admin",
+										"alltodo"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "users Endpoints",
+					"item": [
+						{
+							"name": "Get my TODO tasks",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZXJuYW5kb0BnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6OTk3MzYwMTE5NzQ0NjAwfQ.x4CLII2V7YS284UiOx0fgfcA_Zi3Ey9HgtOXcWebNd0",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/task/todo?page=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"task",
+										"todo"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Save Task",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZXJuYW5kb0BnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6OTk3MzYwMTE5NzQ0NjAwfQ.x4CLII2V7YS284UiOx0fgfcA_Zi3Ey9HgtOXcWebNd0",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/task/save",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"task",
+										"save"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get my late tasks",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/task/late",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"task",
+										"late"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Task",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/task/delete?id=8bf9e716-9ab2-4e61-b3b7-e36272f7ce6f",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"task",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "8bf9e716-9ab2-4e61-b3b7-e36272f7ce6f"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "EditTask",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZXJuYW5kb0BnbWFpbC5jb20iLCJyb2xlcyI6WyJVU0VSIiwiQURNSU4iXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6OTk3MzU4NzQwMDExNjAwfQ.B66nPRpVd25aafNDgmWT7mTdHGis86htEPwJpI6HZwY",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\r\n        \"id\": 5,\r\n        \"createDate\": \"2022-09-04T04:54:16.000+00:00\",\r\n        \"dueDate\": \"2000-07-31T03:00:00.000+00:00\",\r\n        \"email\": \"fernando@gmail.com\",\r\n        \"description\": \"Fazer Janta\",\r\n        \"status\": \"TODO\",\r\n        \"lastEditionDate\": \"2022-09-04T04:54:16.000+00:00\"\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/task/edit",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"task",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
