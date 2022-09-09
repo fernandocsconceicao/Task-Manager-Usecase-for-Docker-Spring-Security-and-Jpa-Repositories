@@ -1,6 +1,4 @@
 Para executar o projeto é necessário instalar e executar o Docker
-Caso use Windows se deparar com o Erro "WSK installation is incomplete" execute o instalador do kernel para linux no
-seu windows "wsl_update_x64.msi" e reinicie seu computador para fazer o seu "efeito"
 
 Rode os seguintes comando no terminal deste projeto
 
